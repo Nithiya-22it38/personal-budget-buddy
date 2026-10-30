@@ -17,4 +17,4 @@ class Budget(TimeStampedModel):
     limit_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f'{self.user.username} - {self.month}/{self.year}'
+        return self.user.username + ' - ' + str(self.month) + '/' + str(self.year)

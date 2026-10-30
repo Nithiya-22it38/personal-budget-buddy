@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import AuthLayout from '../components/AuthLayout'
+import api from '../services/api'
 
 function Register() {
   const [username, setUsername] = useState('')
@@ -8,7 +10,9 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
 
-  function handleSubmit(event) {
+  const navigate = useNavigate()
+
+  async function handleSubmit(event) {
     event.preventDefault()
 
     if (password !== confirmPassword) {
@@ -17,44 +21,85 @@ function Register() {
     }
 
     setError('')
-    console.log('Register clicked:', username, email)
+
+    try {
+      await api.post('/auth/register/', {
+        username: username,
+        email: email,
+        password: password,
+      })
+      navigate('/login')
+    } catch (err) {
+      if (err.response) {
+        const data = err.response.data
+        if (data.username) {
+          setError(data.username[0])
+        } else if (data.email) {
+          setError(data.email[0])
+        } else if (data.password) {
+          setError(data.password[0])
+        } else {
+          setError('Something went wrong. Please try again.')
+        }
+      } else {
+        setError('Cannot reach the server. Is the backend running?')
+      }
+    }
   }
 
   return (
-    <div className="auth-box">
-      <h2>Create Account</h2>
+    <AuthLayout>
+      <h2>Create your account 🚀</h2>
+      <p className="subtitle">Start tracking your money in a minute.</p>
+
       <form onSubmit={handleSubmit}>
+        <label>Username</label>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="Choose a username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+
+        <label>Email</label>
         <input
           type="email"
-          placeholder="Email"
+          placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+
+        <label>Password</label>
         <input
           type="password"
-          placeholder="Password"
+          placeholder="At least 6 characters"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+
+        <label>Confirm password</label>
         <input
           type="password"
-          placeholder="Confirm password"
+          placeholder="Type the password again"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Register</button>
+
+        {error && <div className="error">{error}</div>}
+
+        <p className="muted role-note">
+          New accounts start as Student. An admin can change roles later.
+        </p>
+
+        <button className="btn" type="submit">
+          Register
+        </button>
       </form>
-      <p>
+
+      <p className="switch-text">
         Already have an account? <Link to="/login">Login</Link>
       </p>
-    </div>
+    </AuthLayout>
   )
 }
 

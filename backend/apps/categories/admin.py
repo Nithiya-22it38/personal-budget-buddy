@@ -5,4 +5,4 @@ from .models import Category
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'color')
+    list_display = ('name', 'user')
