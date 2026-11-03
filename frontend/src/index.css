@@ -582,3 +582,111 @@ input:focus {
   color: #b91c1c;
   font-weight: 600;
 }
+
+.goal-card {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.progress-fill.done {
+  background: #16a34a;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.badge-active {
+  background: #eef2ff;
+  color: var(--primary);
+}
+
+.badge-done {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.money-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.money-form input {
+  max-width: 200px;
+  margin-bottom: 0;
+}
+
+.money-form .btn-small {
+  margin-top: 0;
+}
+
+.history-box {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-top: 12px;
+}
+
+.history-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+.sidebar nav a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-badge {
+  background: #ef4444;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.notification-item.unread {
+  background: #eef2ff;
+  border-left: 4px solid var(--primary);
+}
+
+.notification-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.notification-type {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.notification-message {
+  margin: 4px 0 8px;
+  font-size: 14px;
+}
+
+.notification-time {
+  font-size: 12px;
+  color: var(--muted);
+  margin-right: 12px;
+}

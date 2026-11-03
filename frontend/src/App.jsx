@@ -13,6 +13,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import PublicRoute from './components/PublicRoute'
 import RoleRoute from './components/RoleRoute'
 import Layout from './components/Layout'
+import Goals from './pages/Goals'
+import Notifications from './pages/Notifications'
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
           <Route path="/budgets" element={<Budgets />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/goals" element={<Goals />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route
             path="/users"
             element={

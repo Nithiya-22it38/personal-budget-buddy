@@ -82,7 +82,7 @@ function Dashboard() {
         <div className="card">
           <p className="card-label">Overall budget used</p>
           <p className="card-value">
-            {overall === null ? 'Not set' : overall.percent_used + '%'}
+            {overall === null ? '-' : overall.percent_used + '%'}
           </p>
         </div>
       </div>

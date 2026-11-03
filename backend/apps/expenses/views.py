@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.budgets.helpers import check_budget_alerts
 from apps.categories.models import Category
 from .models import Expense
 from .serializers import ExpenseSerializer
@@ -37,7 +38,9 @@ class ExpenseView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        serializer.save(user=request.user)
+        expense = serializer.save(user=request.user)
+        check_budget_alerts(request.user, expense.date.month, expense.date.year)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -71,7 +74,9 @@ class ExpenseDetailView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        serializer.save()
+        expense = serializer.save()
+        check_budget_alerts(request.user, expense.date.month, expense.date.year)
+
         return Response(serializer.data)
 
     def delete(self, request, pk):

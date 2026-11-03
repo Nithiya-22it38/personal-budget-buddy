@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import api from '../services/api'
 
 const menu = [
@@ -8,6 +8,8 @@ const menu = [
   { to: '/expenses', label: 'Expenses', roles: ['student', 'premium', 'admin'] },
   { to: '/incomes', label: 'Income', roles: ['student', 'premium', 'admin'] },
   { to: '/budgets', label: 'Budgets', roles: ['student', 'premium', 'admin'] },
+  { to: '/goals', label: 'Savings Goals', roles: ['student', 'premium', 'admin'] },
+  { to: '/notifications', label: 'Notifications', roles: ['student', 'premium', 'admin'] },
   { to: '/categories', label: 'Categories', roles: ['student', 'premium', 'admin'] },
   { to: '/profile', label: 'Profile', roles: ['student', 'premium', 'admin'] },
   { to: '/users', label: 'Users', roles: ['admin'] },
@@ -15,7 +17,9 @@ const menu = [
 
 function Layout() {
   const [user, setUser] = useState(null)
+  const [unread, setUnread] = useState(0)
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     async function loadUser() {
@@ -28,6 +32,19 @@ function Layout() {
     }
     loadUser()
   }, [])
+
+  async function loadUnread() {
+    try {
+      const response = await api.get('/notifications/unread-count/')
+      setUnread(response.data.unread_count)
+    } catch (err) {
+      setUnread(0)
+    }
+  }
+
+  useEffect(() => {
+    loadUnread()
+  }, [location.pathname])
 
   function logout() {
     localStorage.removeItem('access')
@@ -49,6 +66,9 @@ function Layout() {
           {visibleMenu.map((item) => (
             <NavLink key={item.to} to={item.to}>
               {item.label}
+              {item.to === '/notifications' && unread > 0 && (
+                <span className="nav-badge">{unread}</span>
+              )}
             </NavLink>
           ))}
         </nav>
@@ -64,7 +84,7 @@ function Layout() {
       </aside>
 
       <main className="main-area">
-        <Outlet />
+        <Outlet context={{ refreshUnread: loadUnread }} />
       </main>
     </div>
   )
