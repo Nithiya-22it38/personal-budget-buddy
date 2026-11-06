@@ -20,8 +20,116 @@ body {
   background: var(--bg);
 }
 
+/* ---------- Forms (used on every page) ---------- */
 
-/* ---------- Login and Register layout ---------- */
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  margin-bottom: 18px;
+}
+
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  margin-bottom: 18px;
+  background: white;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--primary-dark);
+}
+
+.btn-small {
+  width: auto;
+  padding: 10px 22px;
+  margin-top: 10px;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-cancel {
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+.btn-edit {
+  color: var(--primary);
+}
+
+.btn-delete {
+  color: #b91c1c;
+}
+
+.btn-cancel {
+  color: var(--muted);
+  margin-left: 8px;
+}
+
+/* ---------- Messages ---------- */
+
+.error {
+  background: #fef2f2;
+  color: #b91c1c;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.success {
+  background: #f0fdf4;
+  color: #15803d;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ---------- Login and Register ---------- */
 
 .auth-page {
   min-height: 100vh;
@@ -41,6 +149,11 @@ body {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
+.auth-card h2 {
+  font-size: 24px;
+  margin: 0 0 6px;
+}
+
 .brand {
   text-align: center;
   margin-bottom: 24px;
@@ -58,59 +171,9 @@ body {
   color: var(--muted);
 }
 
-.auth-card h2 {
-  font-size: 24px;
-  margin: 0 0 6px;
-}
-
-/* ---------- Forms ---------- */
-
-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 6px;
-}
-
-input {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 15px;
-  font-family: inherit;
-  margin-bottom: 18px;
-}
-
-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-}
-
-.btn {
-  width: 100%;
-  padding: 13px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background: var(--primary-dark);
-}
-
-.error {
-  background: #fef2f2;
-  color: #b91c1c;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 16px;
+.subtitle {
+  color: var(--muted);
+  margin: 0 0 28px;
 }
 
 .switch-text {
@@ -126,14 +189,7 @@ input:focus {
   text-decoration: none;
 }
 
-/* On small screens, hide the purple side */
-@media (max-width: 800px) {
-  .auth-side {
-    display: none;
-  }
-}
-
-/* ---------- Dashboard layout ---------- */
+/* ---------- Sidebar and page layout ---------- */
 
 .app-layout {
   display: flex;
@@ -165,6 +221,9 @@ input:focus {
 }
 
 .sidebar nav a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: white;
   text-decoration: none;
   padding: 11px 14px;
@@ -183,6 +242,20 @@ input:focus {
   color: var(--primary);
   font-weight: 600;
   opacity: 1;
+}
+
+.nav-badge {
+  background: #ef4444;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-user {
@@ -223,6 +296,11 @@ input:focus {
   font-size: 28px;
 }
 
+.welcome {
+  margin: -12px 0 24px;
+  font-size: 16px;
+}
+
 /* ---------- Cards and sections ---------- */
 
 .cards {
@@ -236,8 +314,6 @@ input:focus {
   background: white;
   padding: 22px;
   border-radius: 16px;
-  /* border-top: 4px solid var(--primary); */
-  /* box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); */
 }
 
 .card-label {
@@ -253,48 +329,31 @@ input:focus {
   color: var(--primary);
 }
 
-.card-note {
-  margin: 0;
-  font-size:10px;
-  color: var(--muted);
-}
-
 .section {
   background: white;
   padding: 24px;
   border-radius: 16px;
-  /* box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); */
 }
 
 .section h3 {
   margin-top: 0;
 }
 
-.muted {
-  color: var(--muted);
+.list-section {
+  margin-top: 28px;
 }
 
-/* ---------- Categories ---------- */
-
-.dot {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-right: 8px;
+.profile-box {
+  max-width: 500px;
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+/* ---------- Form layouts ---------- */
 
-.chip {
-  background: #eef2ff;
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 14px;
+.expense-form,
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0 16px;
 }
 
 .category-form {
@@ -310,14 +369,9 @@ input:focus {
   margin-bottom: 0;
 }
 
-.category-form input[type="color"] {
-  width: 52px;
-  height: 46px;
-  padding: 4px;
-  margin-bottom: 0;
-}
-
-.category-form .btn-small {
+.category-form .btn-small,
+.money-form .btn-small,
+.month-row .btn-small {
   margin-top: 0;
 }
 
@@ -326,68 +380,33 @@ input:focus {
   border-bottom: 1px solid var(--border);
 }
 
-/* ---------- Small screens ---------- */
-
-@media (max-width: 800px) {
-  .app-layout {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: static;
-  }
-
-  .sidebar nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
+.month-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.btn-small {
+.month-row select {
   width: auto;
-  padding: 10px 22px;
-  margin-top: 10px;
+  padding: 10px 14px;
+  margin-bottom: 0;
 }
 
-.welcome {
-  margin: -12px 0 24px;
-  font-size: 16px;
-}
-
-.role-value {
-  text-transform: capitalize;
-}
-
-.email-value {
-  font-size: 18px;
-  word-break: break-all;
-}
-
-.profile-box {
-  max-width: 500px;
-}
-
-.success {
-  background: #f0fdf4;
-  color: #15803d;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 16px;
-}
+/* ---------- Tables ---------- */
 
 .table-wrap {
   overflow-x: auto;
 }
 
+.data-table,
 .user-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 15px;
 }
 
+.data-table th,
 .user-table th {
   text-align: left;
   padding: 12px 10px;
@@ -396,122 +415,31 @@ input:focus {
   font-size: 14px;
 }
 
+.data-table td,
 .user-table td {
   padding: 12px 10px;
   border-bottom: 1px solid var(--border);
 }
 
 .user-table select {
+  width: auto;
   padding: 8px 10px;
-  border: 1px solid var(--border);
+  margin-bottom: 0;
   border-radius: 8px;
-  font-family: inherit;
   font-size: 14px;
 }
 
-.success {
-  background: #f0fdf4;
+.amount-income {
   color: #15803d;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 16px;
+  font-weight: 600;
 }
 
-.expense-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0 16px;
-}
-
-.expense-form select {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 15px;
-  font-family: inherit;
-  margin-bottom: 18px;
-  background: white;
-}
-
-.list-section {
-  margin-top: 28px;
-}
-
-.table-wrap {
-  overflow-x: auto;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 15px;
-}
-
-.data-table th {
-  text-align: left;
-  padding: 12px 10px;
-  border-bottom: 2px solid var(--border);
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.data-table td {
-  padding: 12px 10px;
-  border-bottom: 1px solid var(--border);
-}
-
-.btn-edit,
-.btn-delete,
-.btn-cancel {
-  border: none;
-  background: none;
-  font-family: inherit;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 6px 10px;
-}
-
-.btn-edit {
-  color: var(--primary);
-}
-
-.btn-delete {
+.amount-expense {
   color: #b91c1c;
+  font-weight: 600;
 }
 
-.btn-cancel {
-  color: var(--muted);
-  margin-left: 8px;
-}
-
-.success {
-  background: #f0fdf4;
-  color: #15803d;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  margin-bottom: 16px;
-}
-.role-note {
-  font-size: 13px;
-  margin: 0 0 16px;
-}
-.month-row {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.month-row select {
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: 15px;
-  background: white;
-}
+/* ---------- Budgets and progress bars ---------- */
 
 .budget-item {
   padding: 16px 0;
@@ -556,40 +484,15 @@ input:focus {
   background: #dc2626;
 }
 
-.filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0 16px;
+.progress-fill.done {
+  background: #16a34a;
 }
 
-.filters select {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: 15px;
-  margin-bottom: 18px;
-  background: white;
-}
-
-.amount-income {
-  color: #15803d;
-  font-weight: 600;
-}
-
-.amount-expense {
-  color: #b91c1c;
-  font-weight: 600;
-}
+/* ---------- Savings goals ---------- */
 
 .goal-card {
   padding: 18px 0;
   border-bottom: 1px solid var(--border);
-}
-
-.progress-fill.done {
-  background: #16a34a;
 }
 
 .badge {
@@ -620,10 +523,6 @@ input:focus {
   margin-bottom: 0;
 }
 
-.money-form .btn-small {
-  margin-top: 0;
-}
-
 .history-box {
   background: #f9fafb;
   border-radius: 10px;
@@ -638,25 +537,7 @@ input:focus {
   font-size: 14px;
 }
 
-.sidebar nav a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav-badge {
-  background: #ef4444;
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* ---------- Notifications ---------- */
 
 .notification-item {
   padding: 14px 16px;
@@ -689,4 +570,118 @@ input:focus {
   font-size: 12px;
   color: var(--muted);
   margin-right: 12px;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 800px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* ---------- Old styles: delete these if no page uses them ---------- */
+
+.role-note {
+  font-size: 13px;
+  margin: 0 0 16px;
+}
+
+.role-value {
+  text-transform: capitalize;
+}
+
+.email-value {
+  font-size: 18px;
+  word-break: break-all;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  background: #eef2ff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  cursor: pointer;
+}
+
+.checkbox-row input {
+  width: auto;
+  margin: 0;
+}
+
+/* ---------- Profile page ---------- */
+
+.profile-page {
+  max-width: 800px;
+}
+
+.profile-page .section {
+  margin-bottom: 20px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.profile-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.profile-sub {
+  margin: 2px 0 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.role-badge {
+  text-transform: capitalize;
+}
+
+.hint {
+  font-size: 13px;
+  margin: 0;
 }

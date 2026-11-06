@@ -6,6 +6,8 @@ import Transactions from './pages/Transactions'
 import Expenses from './pages/Expenses'
 import Incomes from './pages/Incomes'
 import Budgets from './pages/Budgets'
+import Goals from './pages/Goals'
+import Notifications from './pages/Notifications'
 import Categories from './pages/Categories'
 import Profile from './pages/Profile'
 import Users from './pages/Users'
@@ -13,8 +15,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import PublicRoute from './components/PublicRoute'
 import RoleRoute from './components/RoleRoute'
 import Layout from './components/Layout'
-import Goals from './pages/Goals'
-import Notifications from './pages/Notifications'
+import Reports from './pages/Reports'
 
 function App() {
   return (
@@ -30,16 +31,18 @@ function App() {
           <Route path="/expenses" element={<Expenses />} />
           <Route path="/incomes" element={<Incomes />} />
           <Route path="/budgets" element={<Budgets />} />
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/goals" element={<Goals />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/reports" element={<Reports />} />
           <Route
             path="/users"
             element={
               <RoleRoute allowedRoles={['admin']}>
                 <Users />
               </RoleRoute>
+          
             }
           />
         </Route>

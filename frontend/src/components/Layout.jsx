@@ -10,6 +10,7 @@ const menu = [
   { to: '/budgets', label: 'Budgets', roles: ['student', 'premium', 'admin'] },
   { to: '/goals', label: 'Savings Goals', roles: ['student', 'premium', 'admin'] },
   { to: '/notifications', label: 'Notifications', roles: ['student', 'premium', 'admin'] },
+  { to: '/reports', label: 'Reports', roles: ['student', 'premium', 'admin'] },
   { to: '/categories', label: 'Categories', roles: ['student', 'premium', 'admin'] },
   { to: '/profile', label: 'Profile', roles: ['student', 'premium', 'admin'] },
   { to: '/users', label: 'Users', roles: ['admin'] },
@@ -42,6 +43,7 @@ function Layout() {
     }
   }
 
+  // runs again every time the student opens another page
   useEffect(() => {
     loadUnread()
   }, [location.pathname])
@@ -52,9 +54,14 @@ function Layout() {
     navigate('/login')
   }
 
+  // keep only the menu items this user's role is allowed to see
   let visibleMenu = []
   if (user) {
-    visibleMenu = menu.filter((item) => item.roles.includes(user.role))
+    for (let i = 0; i < menu.length; i++) {
+      if (menu[i].roles.includes(user.role)) {
+        visibleMenu.push(menu[i])
+      }
+    }
   }
 
   return (

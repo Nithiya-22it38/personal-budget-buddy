@@ -6,6 +6,7 @@ from .models import Budget
 
 def get_alert_percent(user):
     profile = Profile.objects.filter(user=user).first()
+    # students without a profile get the default of 80
     if profile is None:
         return 80
     return profile.budget_alert_percent
@@ -65,17 +66,17 @@ def check_budget_alerts(user, month, year):
         else:
             label = budget.category.name + ' budget'
 
-        numbers = 'Spent ₹' + str(info['spent']) + ' of ₹' + str(info['limit_amount']) + '.'
+        # remove this line when everything works
+        print('Budget check:', label, info['percent_used'], '%', info['status'])
+
+        spent_text = 'Spent ' + str(info['spent']) + ' of ' + str(info['limit_amount']) + '.'
 
         if info['status'] == 'over':
             title = label + ' exceeded (' + month_text + ')'
-            message = 'You have gone over the ' + label + ' for ' + month_text + '. ' + numbers
+            message = 'You have gone over the ' + label + ' for ' + month_text + '. ' + spent_text
             create_notification(user, 'overspending', title, message, once=True)
 
-        elif info['status'] == 'warning':
+        if info['status'] == 'warning':
             title = label + ' alert (' + month_text + ')'
-            message = (
-                'You have used ' + str(info['percent_used']) + '% of the '
-                + label + ' for ' + month_text + '. ' + numbers
-            )
+            message = 'You have used ' + str(info['percent_used']) + '% of the ' + label + ' for ' + month_text + '. ' + spent_text
             create_notification(user, 'budget_alert', title, message, once=True)

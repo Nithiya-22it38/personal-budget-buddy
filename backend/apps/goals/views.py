@@ -42,19 +42,37 @@ def refresh_status(goal):
     goal.save()
 
 
+# def send_goal_notifications(goal, old_saved):
+#     target = float(goal.target_amount)
+#     old_percent = float(old_saved) / target * 100
+#     new_percent = float(goal.saved_amount) / target * 100
+
+#     if goal.status == 'completed':
+#         title = 'Goal completed: ' + goal.name
+#         message = 'Congratulations! You reached your target of ₹' + str(target) + ' for "' + goal.name + '".'
+#         create_notification(goal.user, 'goal_milestone', title, message)
+
+#     elif old_percent < 50 and new_percent >= 50:
+#         title = 'Halfway there: ' + goal.name
+#         message = 'You have saved ' + str(round(new_percent, 1)) + '% of "' + goal.name + '". Keep going!'
+#         create_notification(goal.user, 'goal_milestone', title, message)
+
 def send_goal_notifications(goal, old_saved):
     target = float(goal.target_amount)
     old_percent = float(old_saved) / target * 100
     new_percent = float(goal.saved_amount) / target * 100
 
+    target_text = f'{target:.2f}'
+    saved_text = f'{float(goal.saved_amount):.2f}'
+
     if goal.status == 'completed':
         title = 'Goal completed: ' + goal.name
-        message = 'Congratulations! You reached your target of ₹' + str(target) + ' for "' + goal.name + '".'
+        message = 'Congratulations! You reached your target of ₹' + target_text + ' for "' + goal.name + '". You have saved ₹' + saved_text + '.'
         create_notification(goal.user, 'goal_milestone', title, message)
 
     elif old_percent < 50 and new_percent >= 50:
         title = 'Halfway there: ' + goal.name
-        message = 'You have saved ' + str(round(new_percent, 1)) + '% of "' + goal.name + '". Keep going!'
+        message = 'You have saved ₹' + saved_text + ' of ₹' + target_text + ' (' + str(round(new_percent, 1)) + '%) for "' + goal.name + '". Keep going!'
         create_notification(goal.user, 'goal_milestone', title, message)
 
 
@@ -144,6 +162,15 @@ class GoalMoneyView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         amount = serializer.validated_data['amount']
+
+        #######                If we added more than the target           ########
+        still_needed = goal.target_amount - goal.saved_amount
+        if amount > still_needed:
+            return Response(
+                {'error': 'You only need ₹' + str(still_needed) + ' more to reach this goal.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         money_date = serializer.validated_data.get('date', date.today())
 
         old_saved = goal.saved_amount

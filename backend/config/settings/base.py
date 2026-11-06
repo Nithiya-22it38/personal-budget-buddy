@@ -11,13 +11,13 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-import os
+
 from dotenv import load_dotenv
 from datetime import timedelta
 
@@ -144,11 +144,7 @@ STATIC_URL = 'static/'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -168,3 +164,37 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
 ]
+
+
+# Email settings
+# If .env has a Gmail address and app password, real emails are sent.
+# If not, emails are printed in the terminal (console mode).
+
+EMAIL_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+
+if EMAIL_USER and EMAIL_PASSWORD:
+    MAILERS = {
+        'default': {
+            'BACKEND': 'django.core.mail.backends.smtp.EmailBackend',
+            'OPTIONS': {
+                'host': 'smtp.gmail.com',
+                'port': 587,
+                'use_tls': True,
+                'username': EMAIL_USER,
+                'password': EMAIL_PASSWORD,
+                'timeout': 10,
+            },
+        },
+    }
+    DEFAULT_FROM_EMAIL = 'BudgetBuddy <' + EMAIL_USER + '>'
+else:
+    MAILERS = {
+        'default': {
+            'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        },
+    }
+    DEFAULT_FROM_EMAIL = 'BudgetBuddy <noreply@budgetbuddy.local>'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

@@ -13,11 +13,23 @@ const typeNames = {
 function Notifications() {
   const [notifications, setNotifications] = useState([])
   const [filter, setFilter] = useState('all')
+  const [error, setError] = useState('')
   const context = useOutletContext()
 
   async function loadNotifications() {
-    const response = await api.get('/notifications/')
-    setNotifications(response.data)
+    try {
+      const response = await api.get('/notifications/')
+      setNotifications(response.data)
+      setError('')
+    } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setError('Address not found. Check that config/urls.py has the notifications line.')
+      } else if (err.response && err.response.status === 401) {
+        setError('You are not logged in. Please log in again.')
+      } else {
+        setError('Could not load notifications. Is the backend running?')
+      }
+    }
   }
 
   useEffect(() => {
@@ -26,13 +38,13 @@ function Notifications() {
 
   async function markRead(id) {
     await api.put('/notifications/' + id + '/read/')
-    loadNotifications()
+    await loadNotifications()
     context.refreshUnread()
   }
 
   async function markAllRead() {
     await api.post('/notifications/read-all/')
-    loadNotifications()
+    await loadNotifications()
     context.refreshUnread()
   }
 
@@ -54,6 +66,8 @@ function Notifications() {
   return (
     <div>
       <h1 className="page-title">Notifications</h1>
+
+      {error && <div className="error">{error}</div>}
 
       <div className="cards">
         <div className="card">
