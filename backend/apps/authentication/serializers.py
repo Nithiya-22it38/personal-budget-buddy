@@ -32,3 +32,4 @@ class UserSerializer(serializers.Serializer):
     username = serializers.CharField()
     email = serializers.EmailField()
     role = serializers.CharField()
+    date_joined = serializers.DateTimeField()

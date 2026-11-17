@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import api from '../services/api'
+import PremiumRequestBox from '../components/PremiumRequestBox'
 
 const monthNames = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -15,6 +16,7 @@ function Reports() {
   const today = new Date()
   const years = [today.getFullYear() - 1, today.getFullYear(), today.getFullYear() + 1]
 
+  const [role, setRole] = useState(null)
   const [month, setMonth] = useState(today.getMonth() + 1)
   const [year, setYear] = useState(today.getFullYear())
   const [fileFormat, setFileFormat] = useState('pdf')
@@ -30,7 +32,15 @@ function Reports() {
   }
 
   useEffect(() => {
-    loadReports()
+    async function loadData() {
+      const me = await api.get('/auth/me/')
+      setRole(me.data.role)
+
+      if (me.data.role !== 'student') {
+        loadReports()
+      }
+    }
+    loadData()
   }, [])
 
   async function handleDownload(report) {
@@ -67,6 +77,8 @@ function Reports() {
     } catch (err) {
       if (err.response && err.response.data.error) {
         setError(err.response.data.error)
+      } else if (err.response && err.response.status === 403) {
+        setError('Reports are only available to premium users.')
       } else if (err.response) {
         setError('Could not create the report. Check the month, year and format.')
       } else {
@@ -86,6 +98,27 @@ function Reports() {
     await api.delete('/reports/' + id + '/')
     setMessage('Report deleted.')
     loadReports()
+  }
+
+  if (role === null) {
+    return <p>Loading...</p>
+  }
+
+  if (role === 'student') {
+    return (
+      <div>
+        <h1 className="page-title">Reports</h1>
+
+        <div className="section">
+          <h3>Reports are a premium feature</h3>
+          <p className="muted">
+            Premium users can generate and download monthly PDF and Excel reports with their
+            income, expenses, budgets and savings. Send a request, and an admin will review it.
+          </p>
+          <PremiumRequestBox />
+        </div>
+      </div>
+    )
   }
 
   return (

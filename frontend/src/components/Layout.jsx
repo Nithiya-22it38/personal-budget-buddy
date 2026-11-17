@@ -14,6 +14,7 @@ const menu = [
   { to: '/categories', label: 'Categories', roles: ['student', 'premium', 'admin'] },
   { to: '/profile', label: 'Profile', roles: ['student', 'premium', 'admin'] },
   { to: '/users', label: 'Users', roles: ['admin'] },
+  { to: '/analytics', label: 'Analytics', roles: ['student', 'premium', 'admin'] },
 ]
 
 function Layout() {

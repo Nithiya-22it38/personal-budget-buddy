@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 
 from apps.analytics.helpers import MONTH_NAMES, get_month_summary
 from apps.notifications.helpers import create_notification
+from common.permissions import IsPremiumOrAdmin
 from .builders import build_excel, build_pdf
 from .models import Report
 from .serializers import ReportRequestSerializer
@@ -25,6 +26,7 @@ def make_report_info(report):
 
 
 class ReportView(APIView):
+    permission_classes = [IsPremiumOrAdmin]
 
     def get(self, request):
         reports = Report.objects.filter(user=request.user).order_by('-id')
@@ -75,6 +77,7 @@ class ReportView(APIView):
 
 
 class ReportDetailView(APIView):
+    permission_classes = [IsPremiumOrAdmin]
 
     def find_report(self, request, pk):
         return Report.objects.filter(id=pk, user=request.user).first()
@@ -90,6 +93,7 @@ class ReportDetailView(APIView):
 
 
 class ReportDownloadView(APIView):
+    permission_classes = [IsPremiumOrAdmin]
 
     def get(self, request, pk):
         report = Report.objects.filter(id=pk, user=request.user).first()

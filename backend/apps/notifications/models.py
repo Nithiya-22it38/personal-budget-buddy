@@ -9,8 +9,11 @@ TYPE_CHOICES = [
     ('savings_reminder', 'Savings Reminder'),
     ('goal_milestone', 'Goal Milestone'),
     ('monthly_report', 'Monthly Report'),
+    ('new_user', 'New User'),
+    ('role_changed', 'Role Changed'),
+    ('premium_request', 'Premium Request'),
+    ('premium_decision', 'Premium Decision'),
 ]
-
 
 class Notification(TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

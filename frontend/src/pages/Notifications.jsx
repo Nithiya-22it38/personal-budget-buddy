@@ -8,6 +8,10 @@ const typeNames = {
   savings_reminder: 'Savings reminder',
   goal_milestone: 'Goal milestone',
   monthly_report: 'Monthly report',
+  new_user: 'New user',
+  role_changed: 'Role changed',
+  premium_request: 'Premium request',
+  premium_decision: 'Premium decision',
 }
 
 function Notifications() {

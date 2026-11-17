@@ -16,6 +16,7 @@ import PublicRoute from './components/PublicRoute'
 import RoleRoute from './components/RoleRoute'
 import Layout from './components/Layout'
 import Reports from './pages/Reports'
+import Analytics from './pages/Analytics'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/categories" element={<Categories />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/analytics" element={<Analytics />} />
           <Route
             path="/users"
             element={

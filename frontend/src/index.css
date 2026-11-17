@@ -685,3 +685,8 @@ select:focus {
   font-size: 13px;
   margin: 0;
 }
+
+.chart-box {
+  width: 100%;
+  min-width: 0;
+}

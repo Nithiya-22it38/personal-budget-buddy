@@ -1,16 +1,17 @@
 from django.conf import settings
 from django.core.mail import send_mail
 
+from apps.authentication.models import User
 from apps.profiles.models import Profile
 from .models import Notification
 
 
 def send_email_for_notification(user, title, message):
-    
+    # no email address means nothing to send
     if not user.email:
         return
 
-    
+    # the student can switch emails off in their profile
     profile = Profile.objects.filter(user=user).first()
     if profile is not None and not profile.email_notifications:
         return
@@ -28,7 +29,7 @@ def send_email_for_notification(user, title, message):
         print('Email could not be sent:', error)
 
 
-def create_notification(user, notification_type, title, message, once=False):
+def create_notification(user, notification_type, title, message, once=False, send_email=True):
     # the title column only holds 100 characters
     title = title[:100]
 
@@ -49,4 +50,12 @@ def create_notification(user, notification_type, title, message, once=False):
         message=message,
     )
 
-    send_email_for_notification(user, title, message)
+    if send_email:
+        send_email_for_notification(user, title, message)
+
+
+def notify_admins(notification_type, title, message):
+    admins = User.objects.filter(role='admin', is_active=True)
+
+    for admin in admins:
+        create_notification(admin, notification_type, title, message, send_email=False)
