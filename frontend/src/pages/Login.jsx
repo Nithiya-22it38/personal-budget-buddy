@@ -7,12 +7,14 @@ function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
-    async function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
     setError('')
+    setLoading(true)
 
     try {
       const response = await api.post('/auth/login/', {
@@ -36,12 +38,13 @@ function Login() {
       } else {
         setError('Cannot reach the server. Is the backend running?')
       }
+      setLoading(false)
     }
   }
 
   return (
     <AuthLayout>
-      <h2>Welcome back 👋</h2>
+      <h2>Welcome back</h2>
       <p className="subtitle">Log in to manage your money.</p>
 
       <form onSubmit={handleSubmit}>
@@ -51,6 +54,7 @@ function Login() {
           placeholder="Enter your username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          disabled={loading}
         />
 
         <label>Password</label>
@@ -59,11 +63,14 @@ function Login() {
           placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          disabled={loading}
         />
 
         {error && <div className="error">{error}</div>}
 
-        <button className="btn" type="submit">Login</button>
+        <button className="btn" type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
 
       <p className="switch-text">

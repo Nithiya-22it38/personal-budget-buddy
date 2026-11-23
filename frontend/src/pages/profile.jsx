@@ -11,30 +11,46 @@ function Profile() {
   const [alertPercent, setAlertPercent] = useState('80')
   const [emailChoice, setEmailChoice] = useState('yes')
 
+  const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+
+  async function loadProfile() {
+    const response = await api.get('/profile/')
+    setFullName(response.data.full_name)
+    setPhone(response.data.phone)
+    setCollege(response.data.college)
+    setMonthlyIncome(response.data.monthly_income)
+    setAlertPercent(response.data.budget_alert_percent)
+
+    if (response.data.email_notifications) {
+      setEmailChoice('yes')
+    } else {
+      setEmailChoice('no')
+    }
+  }
 
   useEffect(() => {
     async function loadData() {
       const me = await api.get('/auth/me/')
       setUser(me.data)
-
-      const response = await api.get('/profile/')
-      setFullName(response.data.full_name)
-      setPhone(response.data.phone)
-      setCollege(response.data.college)
-      setMonthlyIncome(response.data.monthly_income)
-      setAlertPercent(response.data.budget_alert_percent)
-
-      if (response.data.email_notifications) {
-        setEmailChoice('yes')
-      } else {
-        setEmailChoice('no')
-      }
+      await loadProfile()
     }
     loadData()
   }, [])
+
+  function startEditing() {
+    setMessage('')
+    setError('')
+    setEditing(true)
+  }
+
+  async function cancelEditing() {
+    setError('')
+    setEditing(false)
+    await loadProfile()
+  }
 
   async function handleSave(event) {
     event.preventDefault()
@@ -56,7 +72,9 @@ function Profile() {
         budget_alert_percent: Number(alertPercent),
         email_notifications: emailChoice === 'yes',
       })
-      setMessage('Your profile was saved successfully.')
+
+      setMessage('Your profile was saved.')
+      setEditing(false)
     } catch (err) {
       if (err.response) {
         const errors = err.response.data
@@ -117,6 +135,7 @@ function Profile() {
                 placeholder="Your full name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
+                disabled={!editing}
               />
             </div>
 
@@ -127,6 +146,7 @@ function Profile() {
                 placeholder="9876543210"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                disabled={!editing}
               />
             </div>
 
@@ -137,6 +157,7 @@ function Profile() {
                 placeholder="Your college name"
                 value={college}
                 onChange={(e) => setCollege(e.target.value)}
+                disabled={!editing}
               />
             </div>
           </div>
@@ -153,6 +174,7 @@ function Profile() {
                 placeholder="5000"
                 value={monthlyIncome}
                 onChange={(e) => setMonthlyIncome(e.target.value)}
+                disabled={!editing}
               />
             </div>
 
@@ -163,6 +185,7 @@ function Profile() {
                 placeholder="80"
                 value={alertPercent}
                 onChange={(e) => setAlertPercent(e.target.value)}
+                disabled={!editing}
               />
             </div>
           </div>
@@ -176,7 +199,11 @@ function Profile() {
           <div className="expense-form">
             <div>
               <label>Email notifications</label>
-              <select value={emailChoice} onChange={(e) => setEmailChoice(e.target.value)}>
+              <select
+                value={emailChoice}
+                onChange={(e) => setEmailChoice(e.target.value)}
+                disabled={!editing}
+              >
                 <option value="yes">Yes, send me emails</option>
                 <option value="no">No, do not send emails</option>
               </select>
@@ -190,9 +217,22 @@ function Profile() {
         {message && <div className="success">{message}</div>}
         {error && <div className="error">{error}</div>}
 
-        <button className="btn btn-small" type="submit" disabled={saving}>
-          {saving ? 'Saving...' : 'Save profile'}
-        </button>
+        {!editing && (
+          <button className="btn btn-small" type="button" onClick={startEditing}>
+            Edit profile
+          </button>
+        )}
+
+        {editing && (
+          <div>
+            <button className="btn btn-small" type="submit" disabled={saving}>
+              {saving ? 'Saving...' : 'Save changes'}
+            </button>
+            <button className="btn-cancel" type="button" onClick={cancelEditing} disabled={saving}>
+              Cancel
+            </button>
+          </div>
+        )}
       </form>
     </div>
   )

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import api from '../services/api'
 import ProgressBar from '../components/ProgressBar'
 import { getTransactions, amountText } from '../services/transactions'
@@ -7,6 +8,7 @@ function Dashboard() {
   const [user, setUser] = useState(null)
   const [transactions, setTransactions] = useState([])
   const [budgets, setBudgets] = useState([])
+  const [trend, setTrend] = useState([])
 
   const today = new Date()
   const monthNumber = today.getMonth() + 1
@@ -30,6 +32,11 @@ function Dashboard() {
         '/budgets/?month=' + monthNumber + '&year=' + yearNumber
       )
       setBudgets(budgetResponse.data)
+
+      const trendResponse = await api.get(
+        '/analytics/trend/?month=' + monthNumber + '&year=' + yearNumber + '&months=6'
+      )
+      setTrend(trendResponse.data)
     }
     load()
   }, [])
@@ -51,6 +58,13 @@ function Dashboard() {
   for (let i = 0; i < budgets.length; i++) {
     if (budgets[i].category_id === null) {
       overall = budgets[i]
+    }
+  }
+
+  let hasTrendData = false
+  for (let i = 0; i < trend.length; i++) {
+    if (trend[i].income > 0 || trend[i].expenses > 0) {
+      hasTrendData = true
     }
   }
 
@@ -82,12 +96,34 @@ function Dashboard() {
         <div className="card">
           <p className="card-label">Overall budget used</p>
           <p className="card-value">
-            {overall === null ? '-' : overall.percent_used + '%'}
+            {overall === null ? 'Not set' : overall.percent_used + '%'}
           </p>
         </div>
       </div>
 
       <div className="section">
+        <h3>Income and expenses, last 6 months</h3>
+
+        {!hasTrendData && (
+          <p className="muted">No income or expenses in the last 6 months yet.</p>
+        )}
+
+        {hasTrendData && (
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={trend}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="label" />
+              <YAxis />
+              <Tooltip formatter={(value) => '₹' + Number(value).toFixed(2)} />
+              <Legend />
+              <Bar dataKey="income" name="Income" fill="#16a34a" />
+              <Bar dataKey="expenses" name="Expenses" fill="#dc2626" />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
+      </div>
+
+      <div className="section list-section">
         <h3>Budgets this month</h3>
 
         {budgets.length === 0 && (

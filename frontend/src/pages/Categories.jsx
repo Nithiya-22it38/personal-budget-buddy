@@ -23,8 +23,14 @@ function Categories() {
       await api.post('/categories/', { name: name })
       setName('')
       loadCategories()
-    } catch (err) {
-      setError('Could not add the category. Please enter a name.')
+      } catch (err) {
+      if (err.response && err.response.data.error) {
+        setError(err.response.data.error)
+      } else if (err.response && err.response.data.name) {
+        setError(err.response.data.name[0])
+      } else {
+        setError('Could not add the category. Please enter a name.')
+      }
     }
   }
 

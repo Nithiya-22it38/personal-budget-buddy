@@ -8,8 +8,11 @@ const sourceNames = {
 }
 
 export async function getTransactions() {
-  const incomeResponse = await api.get('/incomes/')
-  const expenseResponse = await api.get('/expenses/')
+  const incomeRequest = api.get('/incomes/')
+  const expenseRequest = api.get('/expenses/')
+
+  const incomeResponse = await incomeRequest
+  const expenseResponse = await expenseRequest
 
   const all = []
 
