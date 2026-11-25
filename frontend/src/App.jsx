@@ -35,7 +35,7 @@ function App() {
           <Route path="/goals" element={<Goals />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/categories" element={<Categories />} />
-          <Route path="/Profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route
