@@ -9,7 +9,7 @@ import Budgets from './pages/Budgets'
 import Goals from './pages/Goals'
 import Notifications from './pages/Notifications'
 import Categories from './pages/Categories'
-import profile from './pages/profile'
+import Profile from './pages/profile.jsx'
 import Users from './pages/Users'
 import ProtectedRoute from './components/ProtectedRoute'
 import PublicRoute from './components/PublicRoute'
@@ -35,7 +35,7 @@ function App() {
           <Route path="/goals" element={<Goals />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/categories" element={<Categories />} />
-          <Route path="/profile" element={<profile />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route
