@@ -15,6 +15,7 @@ function Budgets() {
   const [year, setYear] = useState(today.getFullYear())
   const [budgets, setBudgets] = useState([])
   const [categories, setCategories] = useState([])
+  const [saving, setSaving] = useState(false)
 
   const [categoryId, setCategoryId] = useState('')
   const [limit, setLimit] = useState('')
@@ -58,6 +59,10 @@ function Budgets() {
 
   async function handleSubmit(event) {
     event.preventDefault()
+        if (saving) {
+      return
+    }
+    setSaving(true)
     setMessage('')
     setError('')
 
@@ -185,8 +190,8 @@ function Budgets() {
           {message && <div className="success">{message}</div>}
           {error && <div className="error">{error}</div>}
 
-          <button className="btn btn-small" type="submit">
-            {editingId === null ? 'Add budget' : 'Save changes'}
+          <button className="btn btn-small" type="submit" disabled={saving}>
+            {saving ? 'Saving...' : (editingId === null ? 'Add budget' : 'Save changes')}
           </button>
           {editingId !== null && (
             <button className="btn-cancel" type="button" onClick={clearForm}>
